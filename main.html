@@ -1,8 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+<meta charset="UTF-8" />
+<title>Slide In on Scroll</title>
+<style>
+.slide-in {
+opacity: 0;
+transform: translateY(50%);
+transition: all 0.5s;
+}
+.active {
+opacity: 1;
+transform: translateY(0);
+}
+</style>
 </head>
 <body>
 
@@ -58,8 +72,6 @@
       };
     }
 
-	  
-
   </script>
 
   <style>
@@ -70,11 +82,11 @@
       font-size: 20px;
       font-weight: 200;
     }
-    
+
     body {
       margin: 0;
     }
-    
+
     *, *:before, *:after {
       box-sizing: inherit;
     }
@@ -109,7 +121,7 @@
     .align-left.slide-in {
       transform: translateX(-30%) scale(0.95);
     }
-    
+
     .align-right.slide-in {
       transform: translateX(30%) scale(0.95);
     }
@@ -121,5 +133,71 @@
 
   </style>
 
+<div class="images">
+<img
+src="https://picsum.photos/400/400?random=1"
+alt="Image 1"
+class="slide-in"
+/>
+<img
+src="https://picsum.photos/400/400?random=2"
+alt="Image 2"
+class="slide-in"
+/>
+<img
+src="https://picsum.photos/400/400?random=3"
+alt="Image 3"
+class="slide-in"
+/>
+<img
+src="https://picsum.photos/400/400?random=4"
+alt="Image 4"
+class="slide-in"
+/>
+<img
+src="https://picsum.photos/400/400?random=5"
+alt="Image 5"
+class="slide-in"
+/>
+</div>
+<script>
+function debounce(func, wait = 20, immediate = true) {
+var timeout;
+return function () {
+var context = this,
+args = arguments;
+var later = function () {
+timeout = null;
+if (!immediate) func.apply(context, args);
+};
+var callNow = immediate && !timeout;
+clearTimeout(timeout);
+timeout = setTimeout(later, wait);
+if (callNow) func.apply(context, args);
+};
+}
+
+function checkSlide(e) {
+const images = document.querySelectorAll(".slide-in");
+
+images.forEach((image) => {
+// Halfway through the image
+const slideInAt =
+window.scrollY + window.innerHeight - image.height / 2;
+// Bottom of the image
+const imageBottom = image.offsetTop + image.height;
+const isHalfShown = slideInAt > image.offsetTop;
+const isNotScrolledPast = window.scrollY < imageBottom;
+if (isHalfShown && isNotScrolledPast) {
+image.classList.add("active");
+} else {
+image.classList.remove("active");
+}
+});
+}
+
+window.addEventListener("scroll", debounce(checkSlide));
+</script>
 </body>
+</html>
 </html>
